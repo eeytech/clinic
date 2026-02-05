@@ -1,3 +1,6 @@
+# Imagem base necessária
+FROM node:20-alpine
+
 # Diretório de trabalho
 WORKDIR /var/www/html/
 
