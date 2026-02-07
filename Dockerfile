@@ -20,3 +20,6 @@ COPY --from=builder /app/package.json ./package.json
 
 EXPOSE 3000
 CMD ["npm", "start"]
+
+# Se você usa drizzle-kit para fazer o push das alterações
+CMD npx drizzle-kit push && npm start
