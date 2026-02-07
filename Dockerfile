@@ -4,6 +4,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install --legacy-peer-deps
 COPY . .
+ARG DATABASE_URL="teste"
+ENV DATABASE_URL=$DATABASE_URL
 RUN npm run build
 
 # Estágio de Runner
