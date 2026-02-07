@@ -1,23 +1,20 @@
-# Imagem base necessária
-FROM node:20
-
-# Diretório de trabalho
-WORKDIR /var/www/html/
-
-# Copiar pacotes e instalar dependências
-COPY package.json package-lock.json* ./
+# Estágio de Build
+FROM node:20-alphine AS builder
+WORKDIR /app
+COPY package*.json ./
 RUN npm install --legacy-peer-deps
-
-# Copiar o restante do projeto
 COPY . .
-
-# Build do Next.js
-ARG DATABASE_URL="teste"
-ENV DATABASE_URL=$DATABASE_URL
 RUN npm run build
 
-# Expõe a porta padrão
-EXPOSE 80
+# Estágio de Runner
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV production
 
-# Comando de start
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+
+EXPOSE 3000
 CMD ["npm", "start"]
