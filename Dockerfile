@@ -6,7 +6,7 @@ RUN npm install --legacy-peer-deps
 COPY . .
 
 # Argumentos de build para o Next.js (se necessário no momento do build)
-ARG DATABASE_URL
+ARG DATABASE_URL="postgresql://user:password@localhost:5432/db"
 ENV DATABASE_URL=$DATABASE_URL
 
 RUN npm run build
